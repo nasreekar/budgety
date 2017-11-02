@@ -16,7 +16,36 @@ var budgetController = (function(){
 // UI Module
 // BUDGET CONTROLLER
 var UIController = (function(){
+    
     // code here
+    
+    // DOM Strings (private variable)
+    var DOMStrings = {
+        inputType: '.add__type',
+        inputDescription: '.add__description',
+        inputValue: '.add__value',
+        inputBtn: '.add__btn'
+    }
+    
+    
+    // public function for accessing the UI Controller
+    return {
+        getInput : function(){
+            return{
+                
+                // how to return three values at a time if we are creating three separate variables to store the input data?
+                // so we return an object containing these three variables
+                // object with three variables. usagae of ':'
+                
+                type: document.querySelector(DOMStrings.inputType).value,
+                description: document.querySelector(DOMStrings.inputDescription).value,
+                value:document.querySelector(DOMStrings.inputValue).value   
+            };
+        },
+        getDOMStrings : function(){
+            return DOMStrings;
+        }
+    }
     
     
 })();
@@ -25,25 +54,33 @@ var UIController = (function(){
 // App Module which gets access to other controllers 
 // GLOBAL APP CONTROLLER
 var controller = (function(budgetCtrl,UICtrl){
+    
     // code here
     
+    // Accessing DOM Strings from UI Controller
+    var DOM = UICtrl.getDOMStrings();
     
     var ctrlAddItem = function(){
         
         // TO DO LIST ON BUTTON CLICK
         
-        // Get the input data 
+        // Get the input data
+        var input = UICtrl.getInput();
+        console.log(input);
+        
         // Add the item to budget controller
+        
+        
         // Add the item to UI
+        
+        
         // Calculate the budget 
+        
+        
         // Display the budget on UI
         
-        
-        console.log('item added');
-        
-        
     }
-    document.querySelector('.add__btn').addEventListener('click', ctrlAddItem);
+    document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
     
     // On Enter button press
     
