@@ -57,8 +57,22 @@ var controller = (function(budgetCtrl,UICtrl){
     
     // code here
     
-    // Accessing DOM Strings from UI Controller
-    var DOM = UICtrl.getDOMStrings();
+    // setup Event Listeners
+    var setupEventListeners = function(){
+        
+        // Accessing DOM Strings from UI Controller
+        var DOM = UICtrl.getDOMStrings();
+        
+        document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
+    
+        // On Enter button press
+        document.addEventListener('keypress', function(event){
+            if(event.keyCode === 13 || event.which === 13){
+                event.preventDefault(); // prevents the enter key from also triggering a click event
+                ctrlAddItem();
+            }
+        });
+    }
     
     var ctrlAddItem = function(){
         
@@ -66,7 +80,7 @@ var controller = (function(budgetCtrl,UICtrl){
         
         // Get the input data
         var input = UICtrl.getInput();
-        console.log(input);
+        // console.log(input);
         
         // Add the item to budget controller
         
@@ -79,18 +93,19 @@ var controller = (function(budgetCtrl,UICtrl){
         
         // Display the budget on UI
         
-    }
-    document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
+    };
     
-    // On Enter button press
-    
-    document.addEventListener('keypress', function(event){
-        if(event.keyCode === 13 || event.which === 13){
-            event.preventDefault(); // prevents the enter key from also triggering a click event
-            ctrlAddItem();
+    return {
+        init : function(){
+            console.log('Application Started');
+            // setup Event Listeners
+            setupEventListeners();
         }
-    })
+    };
     
     
 })(budgetController,UIController); // arguments to the function
 
+// only line of code that is outside the controller
+// initializing event listeners
+controller.init();
