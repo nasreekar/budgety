@@ -35,6 +35,35 @@ var budgetController = (function(){
         }
     };
    
+    return {
+        addItem : function(type,des,val){
+            var newItem,ID;
+            
+            // create new ID
+            if(data.allItems[type].length > 0){
+                ID = data.allItems[type][data.allItems[type].length-1].id + 1;
+            } else {
+                ID = 0;
+            }
+            
+            // create new item based on inc or exp type
+            if(type === 'exp') {
+                newItem = new Expense(ID,des,val);
+            } else if(type === 'inc'){
+                newItem = new Income(ID,des,val);
+            }
+            
+            // push data to datastructure
+            data.allItems[type].push(newItem); // push method adds an element at the end of array
+            
+            // return new element
+            return newItem;
+        },
+        
+        test : function(){
+            console.log(data);
+        }
+    };
     
 })(); //IIFE function 
 
@@ -102,14 +131,15 @@ var controller = (function(budgetCtrl,UICtrl){
     
     var ctrlAddItem = function(){
         
+        var newItem,input;
+        
         // TO DO LIST ON BUTTON CLICK
         
         // Get the input data
-        var input = UICtrl.getInput();
-        // console.log(input);
+        input = UICtrl.getInput();
         
         // Add the item to budget controller
-        
+        newItem = budgetCtrl.addItem(input.type,input.description,input.value);
         
         // Add the item to UI
         
