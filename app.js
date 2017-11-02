@@ -124,6 +124,29 @@ var UIController = (function(){
             
         },
         
+        clearFields : function(){
+            var fields, fieldsArray;
+            
+            // querySelectorAll returns a list, so we need to convert it into an array. To do this we can use array method slice to create a duplicate.
+            fields = document.querySelectorAll(DOMStrings.inputDescription + ', ' + DOMStrings.inputValue);
+            
+            fieldsArray = Array.prototype.slice.call(fields); // as we cannot use fields.slice directly as fields is a list and not an array. 
+            // Since it is a function we use 'call' method.
+            
+            
+            // the value of the array that is currently being processed, current index, fields Array
+            fieldsArray.forEach(function(current,index,array){
+               
+                // call back function (anonymous function)
+                current.value = ""; //description
+                
+            });
+            
+            // to set the focus to the description input box
+            fieldsArray[0].focus();
+            
+        },
+        
         getDOMStrings : function(){
             return DOMStrings;
         }
@@ -171,6 +194,8 @@ var controller = (function(budgetCtrl,UICtrl){
         // Add the item to UI
         UICtrl.addListItem(newItem,input.type);
         
+        // Clear the fields
+        UICtrl.clearFields();
         
         // Calculate the budget 
         
