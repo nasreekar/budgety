@@ -217,6 +217,13 @@ var UIController = (function(){
             return (type === 'exp' ? '-' : '+') +' '+ int +'.'+ dec;
         };
     
+    // user defined foreach function on nodelist
+    var nodeListForEach = function(list,callback){
+        for(var i = 0; i<list.length;i++){
+            callback(list[i],i); // call back function defined in the foreach loop we defined on nodelist
+        }
+    };
+    
     
     // public function for accessing the UI Controller
     return {
@@ -311,13 +318,6 @@ var UIController = (function(){
             // node list
             var fields = document.querySelectorAll(DOMStrings.expensesPercLabel);
             
-            // user defined foreach function on nodelist
-            var nodeListForEach = function(list,callback){
-                for(var i = 0; i<list.length;i++){
-                    callback(list[i],i); // call back function defined in the foreach loop we defined on nodelist
-                }
-            };
-            
             // create our own foreach function for nodelist
             nodeListForEach(fields,function(current,index){
                 if(percentages[index]>0){
@@ -339,6 +339,20 @@ var UIController = (function(){
             month = now.getMonth();
             document.querySelector(DOMStrings.dateLabel).textContent = months[month] + ', ' + year;
             
+        },
+        
+        // to change the input fields color to red when we toggle the + button to - i.e adding an expense
+        changedType: function(){
+        
+            var fields = document.querySelectorAll(
+                DOMStrings.inputType + ',' +
+                DOMStrings.inputDescription + ',' +
+                DOMStrings.inputValue);
+        
+            nodeListForEach(fields,function(current){
+                current.classList.toggle('red-focus');
+            });
+             document.querySelector(DOMStrings.inputBtn).classList.toggle('red');
         },
     
         getDOMStrings : function(){
@@ -375,6 +389,8 @@ var controller = (function(budgetCtrl,UICtrl){
         // Event Delegation - instead of attaching click event to all the records in expenses and income, 
         // we are adding the prop to the container which holds the records.
         document.querySelector(DOM.container).addEventListener('click',ctrlDeleteItem);
+        
+        document.querySelector(DOM.inputType).addEventListener('change',UICtrl.changedType);
     };
     
     var updateBudget = function(){
