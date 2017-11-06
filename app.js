@@ -184,7 +184,8 @@ var UIController = (function(){
         incomeLabel: '.budget__income--value',
         expensesLabel: '.budget__expenses--value',
         percentageLabel: '.budget__expenses--percentage',
-        container: '.container' // For event delagation, delete an entry
+        container: '.container', // For event delagation, delete an entry
+        expensesPercLabel: '.item__percentage'
     }
     
     
@@ -273,6 +274,29 @@ var UIController = (function(){
             
         },
         
+        // percentages -> array from budget controller
+        displayPercentages: function(percentages){
+            
+            // node list
+            var fields = document.querySelectorAll(DOMStrings.expensesPercLabel);
+            
+            // user defined foreach function on nodelist
+            var nodeListForEach = function(list,callback){
+                for(var i = 0; i<list.length;i++){
+                    callback(list[i],i); // call back function defined in the foreach loop we defined on nodelist
+                }
+            };
+            
+            // create our own foreach function for nodelist
+            nodeListForEach(fields,function(current,index){
+                if(percentages[index]>0){
+                    current.textContent = percentages[index] + '%';
+                }else{
+                    current.textContent = '---';
+                }
+            });
+        },
+        
         getDOMStrings : function(){
             return DOMStrings;
         }
@@ -332,7 +356,7 @@ var controller = (function(budgetCtrl,UICtrl){
         var percentages = budgetCtrl.getPercentages();
         
         // Display the new % on UI
-        console.log(percentages);
+        UICtrl.displayPercentages(percentages);
     };
     
     var ctrlAddItem = function(){
